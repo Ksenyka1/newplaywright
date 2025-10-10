@@ -5,6 +5,7 @@ test.beforeEach(async ({ page }) => {
     await page.getByText('Sign In').click();
     await page.getByText('Registration').click()
 })
+
 //1
 test('Displays "Name is required" message when field is left empty', async ({ page }) => {
 const nameInput = page.locator('#signupName');

@@ -34,6 +34,7 @@ test('Check the Registration button is disabled without data', async ({ page }) 
 await expect(page.getByRole('button', { name: 'Register' })).toBeDisabled();
 })
 
+
 test('Check successfully register new user with correct data', async ({ page }) => {
     const timestamp = Date.now();
     const email = `aqa-user-${timestamp}@test.com`;
