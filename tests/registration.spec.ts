@@ -1,50 +1,37 @@
 import { test, expect } from '@playwright/test';
+import HomePage from '../pom/pages/HomePage';       
+import RegistrationPage from '../pom/forms/RegistrationPage'; 
+
+let homePage: HomePage;
+let registrationPage: RegistrationPage;
 
 test.beforeEach(async ({ page }) => {
-    await page.goto('/');
-    await page.getByText('Sign In').click();
-    await page.getByText('Registration').click()
-})
+  homePage = new HomePage(page);
+  registrationPage = new RegistrationPage(page);
+  await homePage.navigate();
+  await homePage.openRegistrationForm();
+});
 
 test('Expect title', async ({ page }) => {
-   await expect(page.getByRole('heading', { name: 'Registration' })).toBeVisible();
-})
+  await expect(page.getByRole('heading', { name: 'Registration' })).toBeVisible();
+});
 
-test('Check if user can tipe name', async ({ page }) => {
-   await page.locator('//*[@id="signupName"]').fill('Oksana');
-})
+test('Check the Registration button is disabled without data', async () => {
+  await registrationPage.expectRegisterButtonDisabled();
+});
 
-test('Check if user can tipe last name', async ({ page }) => {
-   await page.locator('//*[@id="signupLastName"]').fill('Oksanar');
-})
+test('Check successfully register new user with correct data', async () => {
+  const timestamp = Date.now();
+  const email = `aqa-user-${timestamp}@test.com`;
 
-test('Check if user can tipe Email', async ({ page }) => {
-   await page.locator('//*[@id="signupEmail"]').fill('Oksana11!R@gmail.com');
-})
+  await registrationPage.fillName('Oksana');
+  await registrationPage.fillLastName('Oksanar');
+  await registrationPage.fillEmail(email);
+  await registrationPage.fillPassword('Oksana11!R');
+  await registrationPage.fillRepeatPassword('Oksana11!R');
 
-test('Check if user can tipe password', async ({ page }) => {
-   await page.locator('//*[@id="signupPassword"]').fill('Oksana11!R');
-})
+  await registrationPage.expectRegisterButtonEnabled();
+  await registrationPage.clickRegister();
 
-test('Check if user can re-enter password', async ({ page }) => {
-   await page.locator('//*[@id="signupRepeatPassword"]').fill('Oksana11!R');
-})
-
-test('Check the Registration button is disabled without data', async ({ page }) => {
-await expect(page.getByRole('button', { name: 'Register' })).toBeDisabled();
-})
-
-
-test('Check successfully register new user with correct data', async ({ page }) => {
-    const timestamp = Date.now();
-    const email = `aqa-user-${timestamp}@test.com`;
-
-    await page.fill('#signupName', 'Oksana');
-    await page.fill('#signupLastName', 'Oksanar');
-    await page.fill('#signupEmail', email);
-    await page.fill('#signupPassword', 'Oksana11!R');
-    await page.fill('#signupRepeatPassword', 'Oksana11!R');
-    await expect(page.getByRole('button', { name: 'Register' })).toBeEnabled();
-    await page.getByRole('button', { name: 'Register' }).click();
-    await expect(page.locator('#userNavDropdown')).toBeVisible();
-  })
+  await expect(homePage.page.locator('#userNavDropdown')).toBeVisible();
+});
