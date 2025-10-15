@@ -1,14 +1,13 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "module": "commonjs",
-    "strict": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
     "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node",
     "resolveJsonModule": true,
+    "isolatedModules": false,
+    "strict": true,
+    "skipLibCheck": true,
     "types": ["node", "@playwright/test"]
-  },
-  "include": ["**/*.ts"]
+  }
 }
