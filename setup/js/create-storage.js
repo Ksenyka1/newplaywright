@@ -78,7 +78,7 @@ var fs_1 = require("fs");
                 return [4 /*yield*/, browser.close()];
             case 11:
                 _a.sent();
-                console.log('✅ Storage state saved for qauto.forstudy.space');
+                console.log('Storage state saved for qauto.forstudy.space');
                 return [2 /*return*/];
         }
     });

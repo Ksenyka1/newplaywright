@@ -19,5 +19,5 @@ import fs from 'fs';
   await context.storageState({ path: storagePath });
 
   await browser.close();
-  console.log('✅ Storage state saved for qauto.forstudy.space');
+  console.log('Storage state saved for qauto.forstudy.space');
 })();
