@@ -1,27 +1,23 @@
-import { test as base, Page, BrowserContext } from '@playwright/test';
+import { test as base, expect, BrowserContext, Page } from '@playwright/test';
 import path from 'path';
 
-const STORAGE_PATH = path.resolve(__dirname, '../state/user.json');
-
-type UserFixtures = {
+type Fixtures = {
   userGaragePage: Page;
-  userContext: BrowserContext;
 };
 
-export const test = base.extend<UserFixtures>({
+const test = base.extend<Fixtures>({
+  userGaragePage: async ({ browser }, use) => {
+    const context: BrowserContext = await browser.newContext({
+      storageState: path.resolve(__dirname, '../state/user.json'),
+    });
 
-    userContext: async ({ browser }, use) => {
-    const context = await browser.newContext({ storageState: STORAGE_PATH });
-    await use(context);
-    await context.close();
-  },
-
-  userGaragePage: async ({ userContext }, use) => {
-    const page = await userContext.newPage();
-    await page.goto('https://qauto.forstudy.space/panel/garage');
+    const page = await context.newPage();
     await use(page);
-    await page.close();
+    await context.close();
   },
 });
 
-export { expect } from '@playwright/test';
+export { test, expect };
+
+
+
