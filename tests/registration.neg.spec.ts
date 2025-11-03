@@ -70,7 +70,7 @@ test('Displays "Last name is invalid" message when type абс123', async () => 
 
 // 9. Last name too long
 test('Displays "Last name has to be from 2 to 20 characters long" message when type more than 20 characters', async () => {
-  await registrationPage.fillLastName('qwertyuiop123456789z');
+  await registrationPage.fillLastName('qwertyuiop123456789zz');
   await registrationPage.page.locator('body').click();
   await registrationPage.expectErrorMessage(/Last name has to be from 2 to 20 characters long/);
 });

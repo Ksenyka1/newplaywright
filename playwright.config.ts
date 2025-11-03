@@ -19,7 +19,7 @@ export default defineConfig({
       password: process.env.HTTP_PASSWORD || 'welcome2qauto',
     },
     trace: 'on-first-retry',
-    headless: false,
+    headless:  true,
     viewport: { width: 1280, height: 720 },
   },
 
