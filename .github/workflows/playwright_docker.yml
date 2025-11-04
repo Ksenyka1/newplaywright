@@ -2,27 +2,18 @@ name: Playwright Tests in Docker
 
 on:
   workflow_dispatch:
-    inputs:
-      test_options:
-        description: 'Options for the Playwright tests'
-        required: false
-        default: ''
   push:
     branches: [ main, lesson31 ]
   pull_request:
     branches: [ main ]
 
-env:
-  HTTP_USERNAME: ${{ secrets.HTTP_USERNAME }}
-  HTTP_PASSWORD: ${{ secrets.HTTP_PASSWORD }}
-
 jobs:
-  test-docker:
-    timeout-minutes: 60
+  playwright-tests:
     runs-on: ubuntu-latest
+    timeout-minutes: 60
 
     container:
-      image: cypress/browsers:node-20.9.0-chrome-118.0.5993.88-1-ff-118.0.2-edge-118.0.2088.46-1
+      image: mcr.microsoft.com/playwright:v1.39.0-jammy
 
     steps:
       - name: Checkout code
@@ -32,12 +23,12 @@ jobs:
         run: npm ci
 
       - name: Run Playwright tests
-        run: npx playwright test ${{ inputs.test_options }}
+        run: npx playwright test
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
-          name: playwright-report-docker
+          name: playwright-report
           path: playwright-report/
           retention-days: 30
